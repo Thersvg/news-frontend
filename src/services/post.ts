@@ -17,4 +17,32 @@ export const PostAPI = {
     }
     return response.json();
   },
+
+  getAllByUser: async () => {
+    const response = await fetch("http://localhost:3000/post/by-user", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${tokenAcess}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Erro ao buscar posts");
+    }
+    return response.json();
+  },
+
+  delete: async (postId: number) => {
+    const response = await fetch(`http://localhost:3000/post/${postId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${tokenAcess}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Erro ao deletar post");
+    }
+    return response.json();
+  },
 };

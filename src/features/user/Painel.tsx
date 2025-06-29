@@ -3,22 +3,15 @@ import { Menu, LogOut, Settings, Newspaper, Tags, Bot } from "lucide-react";
 import { useAuthStore } from "../../store/authStore";
 import { useNavigate } from "react-router";
 import IAnews from "../../components/IAnews";
+import Posts from "../../components/Posts";
 
 const menuItems = [
-  { label: "Inteligência Artificial", icon: <Bot size={20} />, key: "ia" },
+  { label: "NeuroIA", icon: <Bot size={20} />, key: "ia" },
   { label: "Postagens", icon: <Newspaper size={20} />, key: "posts" },
   { label: "Categorias", icon: <Tags size={20} />, key: "categories" },
   //{ label: "Configurações", icon: <Settings size={20} />, key: "settings" },
 ];
 
-function PostsComponent() {
-  return (
-    <div className="bg-white rounded-xl shadow-md p-8 min-h-[200px] flex flex-col justify-center">
-      <h2 className="text-xl font-semibold mb-2 text-gray-800">Postagens</h2>
-      <p className="text-gray-500">Conteúdo de Postagens</p>
-    </div>
-  );
-}
 function CategoriesComponent() {
   return (
     <div className="bg-white rounded-xl shadow-md p-8 min-h-[200px] flex flex-col justify-center">
@@ -30,7 +23,7 @@ function CategoriesComponent() {
 
 const components: Record<string, JSX.Element> = {
   ia: <IAnews />,
-  posts: <PostsComponent />,
+  posts: <Posts />,
   categories: <CategoriesComponent />,
   //settings: <SettingsComponent />,
 };

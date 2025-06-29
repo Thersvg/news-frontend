@@ -48,6 +48,9 @@ export default function IAnews() {
     setSummary("");
   }
 
+  //obs: add localidade nos posts
+  //obs: melhorar editor de texto
+
   async function CreatePost() {
     if (!title) {
       toast.warn("Por favor, insira o título da notícia antes de continuar.");
