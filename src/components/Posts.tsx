@@ -81,6 +81,14 @@ export default function Posts() {
   };
 
   async function removePost(idPost: number) {
+    if (
+      !window.confirm(
+        "Tem certeza que deseja excluir esta publicação? Esta ação não pode ser desfeita."
+      )
+    ) {
+      return;
+    }
+
     try {
       await PostAPI.delete(idPost);
       toast.success("Publicação excluída com sucesso!");
@@ -250,12 +258,12 @@ export default function Posts() {
                   <label className="flex items-center gap-2 mb-2 text-[#18181b] font-medium">
                     <FileText size={18} /> Conteúdo da notícia
                   </label>
-                  <div className="flex-1 min-h-[200px] max-h-full overflow-auto bg-white rounded-lg border border-gray-200">
-                    <TiptapEditor
+                    <div className="flex-1 min-h-[200px] max-h-full overflow-auto bg-white rounded-lg border border-gray-200" style={{ color: "#18181b" }}>
+                     <TiptapEditor
                       content={editorContent}
                       onChange={setEditorContent}
-                    />
-                  </div>
+                    /> 
+                    </div>
                 </div>
               </div>
 

@@ -4,6 +4,7 @@ import { useAuthStore } from "../../store/authStore";
 import { useNavigate } from "react-router";
 import IAnews from "../../components/IAnews";
 import Posts from "../../components/Posts";
+import Categories from "../../components/Categories";
 
 const menuItems = [
   { label: "NeuroIA", icon: <Bot size={20} />, key: "ia" },
@@ -12,19 +13,10 @@ const menuItems = [
   //{ label: "Configurações", icon: <Settings size={20} />, key: "settings" },
 ];
 
-function CategoriesComponent() {
-  return (
-    <div className="bg-white rounded-xl shadow-md p-8 min-h-[200px] flex flex-col justify-center">
-      <h2 className="text-xl font-semibold mb-2 text-gray-800">Categorias</h2>
-      <p className="text-gray-500">Conteúdo de Categorias</p>
-    </div>
-  );
-}
-
 const components: Record<string, JSX.Element> = {
   ia: <IAnews />,
   posts: <Posts />,
-  categories: <CategoriesComponent />,
+  categories: <Categories />,
   //settings: <SettingsComponent />,
 };
 
