@@ -8,7 +8,7 @@ const menuItems = [
   { label: "Inteligência Artificial", icon: <Bot size={20} />, key: "ia" },
   { label: "Postagens", icon: <Newspaper size={20} />, key: "posts" },
   { label: "Categorias", icon: <Tags size={20} />, key: "categories" },
-  { label: "Configurações", icon: <Settings size={20} />, key: "settings" },
+  //{ label: "Configurações", icon: <Settings size={20} />, key: "settings" },
 ];
 
 function PostsComponent() {
@@ -27,22 +27,12 @@ function CategoriesComponent() {
     </div>
   );
 }
-function SettingsComponent() {
-  return (
-    <div className="bg-white rounded-xl shadow-md p-8 min-h-[200px] flex flex-col justify-center">
-      <h2 className="text-xl font-semibold mb-2 text-gray-800">
-        Configurações
-      </h2>
-      <p className="text-gray-500">Conteúdo de Configurações</p>
-    </div>
-  );
-}
 
 const components: Record<string, JSX.Element> = {
   ia: <IAnews />,
   posts: <PostsComponent />,
   categories: <CategoriesComponent />,
-  settings: <SettingsComponent />,
+  //settings: <SettingsComponent />,
 };
 
 export default function Painel() {
@@ -58,70 +48,66 @@ export default function Painel() {
         {/* Mobile overlay */}
         <div
           className={`fixed inset-0 bg-black bg-opacity-60 z-30 transition-opacity md:hidden ${
-        sidebarOpen ? "block" : "hidden"
+            sidebarOpen ? "block" : "hidden"
           }`}
           onClick={() => setSidebarOpen(false)}
         />
         <aside
           className={`fixed z-40 top-0 left-0 h-full w-64 bg-[#181a1b] flex flex-col transition-transform duration-200 shadow-2xl
-        ${
-          sidebarOpen
-            ? "translate-x-0"
-            : "-translate-x-full md:translate-x-0"
-        }
+        ${sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
         md:static md:translate-x-0
         `}
         >
           {/* Avatar e nome */}
           <div className="flex flex-col items-center gap-2 px-7 py-8 border-b border-[#232425]">
-        <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center text-[#181a1b] text-2xl font-bold shadow-lg">
-          {/* Avatar fictício */}
-          <span>N</span>
-        </div>
-        <span className="text-lg font-semibold text-white tracking-tight">
-          Neurona
-        </span>
+            <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center text-[#181a1b] text-2xl font-bold shadow-lg">
+              {/* Avatar fictício */}
+              <span>N</span>
+            </div>
+            <span className="text-lg font-semibold text-white tracking-tight">
+              Neurona
+            </span>
           </div>
           {/* Navegação */}
           <nav className="flex-1 py-6 space-y-1">
-        {menuItems.map((item) => (
-          <button
-            key={item.key}
-            className={`flex items-center w-full px-7 py-3 rounded-lg gap-3 font-medium transition-all cursor-pointer
+            {menuItems.map((item) => (
+              <button
+                key={item.key}
+                className={`flex items-center w-full px-7 py-3 rounded-lg gap-3 font-medium transition-all cursor-pointer
           ${
             selected === item.key
               ? "bg-[#e74c3c] text-white shadow"
               : "text-white hover:bg-[#232425] hover:text-[#e74c3c]"
           }
           `}
-            onClick={() => {
-          setSelected(item.key);
-          setSidebarOpen(false);
-            }}
-          >
-            <span
-          className={`text-lg ${
-            selected === item.key ? "text-white" : "text-[#e74c3c]"
-          }`}
-            >
-          {item.icon}
-            </span>
-            {item.label}
-          </button>
-        ))}
+                onClick={() => {
+                  setSelected(item.key);
+                  setSidebarOpen(false);
+                }}
+              >
+                <span
+                  className={`text-lg ${
+                    selected === item.key ? "text-white" : "text-[#e74c3c]"
+                  }`}
+                >
+                  {item.icon}
+                </span>
+                {item.label}
+              </button>
+            ))}
           </nav>
           {/* Footer com logout */}
           <div className="px-7 py-6 border-t border-[#232425] mt-auto">
-        <button
-          className="flex items-center gap-3 text-[#e74c3c] font-medium hover:text-white transition-colors cursor-pointer"
-          onClick={() => {
-            logout();
-            navigate("/login");
-          }}
-        >
-          <LogOut size={20} />
-          Sair
-        </button>
+            <button
+              className="flex items-center gap-3 text-[#e74c3c] font-medium hover:text-white transition-colors cursor-pointer"
+              onClick={() => {
+                logout();
+                navigate("/login");
+              }}
+            >
+              <LogOut size={20} />
+              Sair
+            </button>
           </div>
         </aside>
       </div>
@@ -131,22 +117,22 @@ export default function Painel() {
         {/* Top bar */}
         <header className="flex items-center h-16 px-6 border-b border-[#232425] md:hidden bg-[#181a1b] shadow-sm">
           <button
-        className="text-[#e74c3c]"
-        onClick={() => setSidebarOpen(true)}
+            className="text-[#e74c3c]"
+            onClick={() => setSidebarOpen(true)}
           >
-        <Menu size={24} />
+            <Menu size={24} />
           </button>
           <span className="ml-4 text-2xl font-bold text-white tracking-tight">
-        Painel
+            Painel
           </span>
         </header>
         <main className="flex-1 overflow-auto flex items-stretch bg-white">
           <div className="flex-1 flex items-stretch">
-        <div className="w-full flex items-stretch">
-          <div className="flex-1 flex flex-col justify-center">
-            {components[selected]}
-          </div>
-        </div>
+            <div className="w-full flex items-stretch">
+              <div className="flex-1 flex flex-col justify-center">
+                {components[selected]}
+              </div>
+            </div>
           </div>
         </main>
       </div>
