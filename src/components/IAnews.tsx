@@ -189,7 +189,45 @@ export default function IAnews() {
             <div className="flex flex-col lg:flex-row gap-6 h-full">
               {/* Left: Image + Editor */}
               <div className="flex-1 flex flex-col gap-4 min-w-0 h-full">
-                {/* Título da notícia */}
+                
+                {/* Editor */}
+                <div className="flex-1 flex flex-col min-h-0">
+                  <label className="flex items-center gap-2 mb-2 text-[#18181b] font-medium">
+                    <FileText size={18} /> Conteúdo da notícia
+                  </label>
+                  <div className="flex-1 min-h-[200px] max-h-full overflow-auto">
+                    <TiptapEditor
+                      content={editorContent}
+                      onChange={setEditorContent}
+                    />
+                  </div>
+                </div>
+                {/* Chat IA */}
+                <div>
+                  <label className="flex items-center gap-2 mb-2 text-[#18181b] font-medium">
+                    <MessageCircle size={18} /> Chat da IA
+                  </label>
+                  <div className="flex gap-2">
+                    <input
+                      className="flex-1 border border-gray-200 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#e63946]"
+                      placeholder="Envie um novo prompt..."
+                      value={chatPrompt}
+                      onChange={(e) => setChatPrompt(e.target.value)}
+                    />
+                    <button
+                      className="bg-[#e63946] text-white rounded-lg p-2 hover:bg-[#d62839] transition"
+                      onClick={handleChatPrompt}
+                      disabled={!chatPrompt.trim()}
+                    >
+                      <Send size={18} />
+                    </button>
+                  </div>
+                </div>                
+              </div>
+
+              {/* Right: Chat + Options */}
+              <div className="w-full lg:w-80 flex flex-col gap-4 flex-shrink-0 h-full">
+                {/* Título da notícia */}               
                 <div>
                   <label className="flex items-center gap-2 mb-2 text-[#18181b] font-medium">
                     <FileText size={18} /> Título da notícia
@@ -208,7 +246,7 @@ export default function IAnews() {
                   </label>
                   <textarea
                     className="w-full border border-gray-200 rounded-lg p-2 mb-2 focus:outline-none focus:ring-2 focus:ring-[#e63946] resize-none"
-                    rows={2}
+                    rows={4}
                     placeholder="Digite um resumo breve da notícia..."
                     value={summary}
                     onChange={(e) => setSummary(e.target.value)}
@@ -231,45 +269,7 @@ export default function IAnews() {
                       {image.name}
                     </span>
                   )}
-                </label>
-                {/* Editor */}
-                <div className="flex-1 flex flex-col min-h-0">
-                  <label className="flex items-center gap-2 mb-2 text-[#18181b] font-medium">
-                    <FileText size={18} /> Conteúdo da notícia
-                  </label>
-                  <div className="flex-1 min-h-[200px] max-h-full overflow-auto">
-                    <TiptapEditor
-                      content={editorContent}
-                      onChange={setEditorContent}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Right: Chat + Options */}
-              <div className="w-full lg:w-80 flex flex-col gap-4 flex-shrink-0 h-full">
-                {/* Chat IA */}
-                <div>
-                  <label className="flex items-center gap-2 mb-2 text-[#18181b] font-medium">
-                    <MessageCircle size={18} /> Chat da IA
-                  </label>
-                  <div className="flex gap-2">
-                    <input
-                      className="flex-1 border border-gray-200 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-[#e63946]"
-                      placeholder="Envie um novo prompt..."
-                      value={chatPrompt}
-                      onChange={(e) => setChatPrompt(e.target.value)}
-                    />
-                    <button
-                      className="bg-[#e63946] text-white rounded-lg p-2 hover:bg-[#d62839] transition"
-                      onClick={handleChatPrompt}
-                      disabled={!chatPrompt.trim()}
-                    >
-                      <Send size={18} />
-                    </button>
-                  </div>
-                </div>
-
+                </label>                
                 {/* Categoria única */}
                 <div>
                   <label className="flex items-center gap-2 mb-2 text-[#18181b] font-medium">

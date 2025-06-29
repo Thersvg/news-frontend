@@ -45,4 +45,19 @@ export const PostAPI = {
     }
     return response.json();
   },
+
+  update: async (postId: number, data: any) => {
+    const response = await fetch(`http://localhost:3000/post/${postId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${tokenAcess}`,
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      throw new Error("Erro ao atualizar post");
+    }
+    return response.json();
+  },
 };
