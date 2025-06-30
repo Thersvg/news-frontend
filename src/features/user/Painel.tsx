@@ -30,15 +30,18 @@ export default function Painel() {
     <div className="flex h-screen bg-gradient-to-br from-gray-50 to-white font-sans">
       {/* Sidebar */}
       <div>
-        {/* Mobile overlay */}
         <div
-          className={`fixed inset-0 bg-black bg-opacity-60 z-30 transition-opacity md:hidden ${
+          className={`fixed inset-0 z-30 transition-opacity md:hidden ${
             sidebarOpen ? "block" : "hidden"
           }`}
+          style={{
+            backdropFilter: "blur(8px)",
+            backgroundColor: "rgba(255,255,255,0.1)",
+          }}
           onClick={() => setSidebarOpen(false)}
         />
         <aside
-          className={`fixed z-40 top-0 left-0 h-full w-64 bg-[#181a1b] flex flex-col transition-transform duration-200 shadow-2xl
+          className={`fixed z-40 top-0 left-0 h-full w-64 bg-[#181818] flex flex-col transition-transform duration-200 shadow-2xl
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
         md:static md:translate-x-0
         `}
