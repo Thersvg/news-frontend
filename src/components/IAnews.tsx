@@ -166,36 +166,49 @@ export default function IAnews() {
     >
       <div className="w-full max-w-6xl">
         {step === "prompt" && (
-          <div className="bg-white rounded-xl shadow-lg p-6 sm:p-8 w-full max-w-md mx-auto flex flex-col items-center">
-            <h2 className="text-2xl font-bold text-[#18181b] mb-6 text-center">
+          <div
+            className="backdrop-blur-md bg-white/30 border border-white/20 shadow-2xl rounded-2xl p-8 sm:p-10 w-full max-w-md mx-auto flex flex-col items-center gap-6"
+            style={{
+              boxShadow:
+                "0 4px 32px 0 rgba(230,57,70,0.15), 0 1.5px 8px 0 rgba(24,26,27,0.10)",
+              border: "1.5px solid rgba(230,57,70,0.18)",
+            }}
+          >
+            <h2 className="text-2xl font-bold text-[#fff] mb-2 text-center drop-shadow-lg tracking-wide">
               O que vamos criar hoje?
             </h2>
             <textarea
-              className="w-full border border-gray-200 rounded-lg p-3 mb-6 focus:outline-none focus:ring-2 focus:ring-red-600 resize-none"
+              className="w-full border border-[#e63946]/40 bg-white/10 text-[#fff] placeholder:text-[#fff]/60 rounded-xl p-4 mb-2 focus:outline-none focus:ring-2 focus:ring-[#e63946] resize-none shadow-inner transition"
               rows={4}
               placeholder="Descreva sua ideia de notícia..."
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
+              style={{
+                backdropFilter: "blur(2px)",
+                fontFamily: "Fira Mono, monospace",
+                letterSpacing: "0.02em",
+              }}
             />
             <button
-              className="flex items-center gap-2 bg-[#e63946] text-white px-6 py-2 rounded-lg font-semibold transition 
-                                                        hover:bg-[#d62839] hover:shadow-lg hover:scale-105 active:scale-100 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#e63946]"
+              className="flex items-center gap-2 bg-gradient-to-r from-[#e63946] via-[#ff5964] to-[#e63946] text-white px-8 py-2 rounded-xl font-semibold transition hover:scale-105 hover:shadow-xl active:scale-100 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#e63946] shadow-lg"
               onClick={handlePromptSubmit}
               disabled={!prompt.trim()}
               style={{
                 opacity: !prompt.trim() ? 0.6 : 1,
                 pointerEvents: !prompt.trim() ? "none" : "auto",
+                textShadow: "0 1px 8px #e63946cc",
               }}
             >
               <Plus size={18} /> Criar
             </button>
             <button
-              className="mt-2 text-sm text-gray-500 hover:text-gray-700 underline bg-transparent px-2 py-1 rounded transition cursor-pointer"
+              className="mt-2 text-sm text-[#fff]/70 hover:text-[#fff] underline bg-transparent px-2 py-1 rounded transition cursor-pointer"
               onClick={() => setStep("edit")}
               type="button"
             >
               Pular
             </button>
+            <div className="w-full h-1 mt-4 rounded-full bg-gradient-to-r from-[#e63946]/40 via-transparent to-[#e63946]/40 animate-pulse" />
           </div>
         )}
 

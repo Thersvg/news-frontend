@@ -31,8 +31,13 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-black">
-      <div className="w-full max-w-sm bg-white/10 backdrop-blur-md rounded-2xl shadow-xl p-8 flex flex-col items-center border border-gray-800">
+    <div
+      className="min-h-screen flex items-center justify-center"
+      style={{
+      background: "radial-gradient(circle at 50% 0%, #e63946 0%, #1f1f1f 70%, #181a1b 100%)",
+      }}
+    >
+      <div className="w-full max-w-sm bg-white/10 backdrop-blur-md rounded-2xl shadow-xl p-8 flex flex-col items-center border-gray-800">
         <h1 className="text-3xl font-extrabold text-white mb-2 tracking-tight text-center">
           Neurona
         </h1>
