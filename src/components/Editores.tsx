@@ -1,88 +1,88 @@
 import { useEffect, useState } from "react";
-import { CategoriesAPI } from "../services/categories";
+import { AuthAPI } from "../services/auth";
 import { toast, ToastContainer } from "react-toastify";
 
-type Category = {
+type User = {
   id: number;
   name: string;
-  description: string;
+  role: string;
+  email: string;
+  password?: string;
 };
 
-export default function Categories() {
-  const [categories, setCategories] = useState<Category[]>([]);
+export default function Editores() {
+  const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showModalEdit, setShowModalEdit] = useState(false);
-  const [newCategory, setNewCategory] = useState({
+  const [newUser, setNewUser] = useState({
     name: "",
-    description: "",
+    role: "",
+    email: "",
+    password: "",
   });
-  const [editCategory, setEditCategory] = useState({
+  
+  const [editUser, setEditUser] = useState({
     id: 0,
     name: "",
-    description: "",
+    role: "",
+    email: "",
+    password: "",
   });
 
-  async function handleAddCategory() {
+  async function handleAddUser() {
     try {
-      if (!newCategory.name) {
-        toast.warn("Por favor, insira o nome da categoria antes de continuar.");
-        return;
-      }
-      if (!newCategory.description) {
-        toast.warn(
-          "Por favor, insira a descrição da categoria antes de continuar."
-        );
+      if (
+        !newUser.name ||
+        !newUser.role ||
+        !newUser.email ||
+        !newUser.password
+      ) {
+        toast.warn("Preencha todos os campos antes de continuar.");
         return;
       }
       setLoading(true);
-      await CategoriesAPI.Create(newCategory);
+      await AuthAPI.createUser(newUser);
       setShowModal(false);
       loadData();
       setLoading(false);
     } catch {
       toast.error(
-        "Erro ao criar categoria. Verifique os dados e tente novamente."
+        "Erro ao criar editor. Verifique os dados e tente novamente."
       );
     }
   }
 
-  async function handleEditCategory() {
+  async function handleEditUser() {
     try {
       setLoading(true);
-      await CategoriesAPI.EditCategory(Number(editCategory.id), editCategory);
+      await AuthAPI.updateUser(Number(editUser.id), editUser);
       setShowModalEdit(false);
       loadData();
       setLoading(false);
     } catch {
       toast.error(
-        "Erro ao editar categoria. Verifique os dados e tente novamente."
+        "Erro ao editar editor. Verifique os dados e tente novamente."
       );
     }
   }
 
   async function handleDelete(id: number) {
-    if (
-      !window.confirm(
-        "Tem certeza que deseja excluir esta categoria? Esta ação não pode ser desfeita."
-      )
-    ) {
-      return;
-    }
+    if (!window.confirm("Tem certeza que deseja excluir este editor?")) return;
     setLoading(true);
-    await CategoriesAPI.Remove(id);
-    toast.success("Publicação excluída com sucesso!");
+    await AuthAPI.deleteUser(Number(id));
+    toast.success("Editor excluído com sucesso!");
     loadData();
     setLoading(false);
   }
 
   async function loadData() {
     try {
-      const allCategories = await CategoriesAPI.GetAll();
-      setCategories(allCategories);
+      const allUsers = await AuthAPI.getAllUsers();
+      setUsers(allUsers);
     } catch {
       toast.error(
-        "Não foi possível carregar as informações. Tente novamente mais tarde."
+        "Não foi possível carregar os editores. Tente novamente mais tarde."
       );
     }
   }
@@ -114,20 +114,19 @@ export default function Categories() {
     );
   }
 
-  // Alizarin: #e74c3c, Dark: #181818
   return (
     <div className="min-h-screen bg-[#181818] text-white">
       {/* Top Nav */}
       <nav className="flex flex-col sm:flex-row items-center justify-between px-4 sm:px-6 py-4 bg-[#181818] border-b border-gray-800 gap-2">
         <h1 className="text-2xl font-bold text-center w-full sm:w-auto">
-          Categorias
+          Editores
         </h1>
         <div className="w-full sm:w-auto flex justify-center sm:justify-end">
           <button
             onClick={() => setShowModal(true)}
             className="bg-[#e74c3c] hover:bg-red-600 text-white px-4 py-2 rounded font-semibold transition w-full sm:w-auto"
           >
-            Nova Categoria
+            Novo Editor
           </button>
         </div>
       </nav>
@@ -142,21 +141,38 @@ export default function Categories() {
           }}
         >
           <div className="bg-[#232323] text-[#f5f5f5] rounded-lg shadow-lg w-full max-w-md p-4 sm:p-6">
-            <h2 className="text-xl font-bold mb-4">Nova Categoria</h2>
+            <h2 className="text-xl font-bold mb-4">Novo Editor</h2>
             <input
               className="w-full border border-gray-300 rounded px-3 py-2 mb-3 focus:outline-none focus:border-[#e74c3c] bg-[#181818] text-white"
               placeholder="Nome"
-              value={newCategory.name}
+              value={newUser.name}
               onChange={(e) =>
-                setNewCategory((c) => ({ ...c, name: e.target.value }))
+                setNewUser((u) => ({ ...u, name: e.target.value }))
               }
             />
-            <textarea
+            <input
               className="w-full border border-gray-300 rounded px-3 py-2 mb-3 focus:outline-none focus:border-[#e74c3c] bg-[#181818] text-white"
-              placeholder="Descrição"
-              value={newCategory.description}
+              placeholder="Cargo"
+              value={newUser.role}
               onChange={(e) =>
-                setNewCategory((c) => ({ ...c, description: e.target.value }))
+                setNewUser((u) => ({ ...u, role: e.target.value }))
+              }
+            />
+            <input
+              className="w-full border border-gray-300 rounded px-3 py-2 mb-3 focus:outline-none focus:border-[#e74c3c] bg-[#181818] text-white"
+              placeholder="E-mail"
+              value={newUser.email}
+              onChange={(e) =>
+                setNewUser((u) => ({ ...u, email: e.target.value }))
+              }
+            />
+            <input
+              type="password"
+              className="w-full border border-gray-300 rounded px-3 py-2 mb-3 focus:outline-none focus:border-[#e74c3c] bg-[#181818] text-white"
+              placeholder="Senha"
+              value={newUser.password}
+              onChange={(e) =>
+                setNewUser((u) => ({ ...u, password: e.target.value }))
               }
             />
             <div className="flex flex-col sm:flex-row justify-end gap-2">
@@ -167,7 +183,7 @@ export default function Categories() {
                 Cancelar
               </button>
               <button
-                onClick={handleAddCategory}
+                onClick={handleAddUser}
                 className="px-4 py-2 rounded bg-[#e74c3c] text-white font-semibold hover:bg-red-600 w-full sm:w-auto"
               >
                 Salvar
@@ -187,21 +203,38 @@ export default function Categories() {
           }}
         >
           <div className="bg-[#232323] text-[#f5f5f5] rounded-lg shadow-lg w-full max-w-md p-4 sm:p-6">
-            <h2 className="text-xl font-bold mb-4">Nova Categoria</h2>
+            <h2 className="text-xl font-bold mb-4">Editar Editor</h2>
             <input
               className="w-full border border-gray-300 rounded px-3 py-2 mb-3 focus:outline-none focus:border-[#e74c3c] bg-[#181818] text-white"
               placeholder="Nome"
-              value={editCategory.name}
+              value={editUser.name}
               onChange={(e) =>
-                setEditCategory((c) => ({ ...c, name: e.target.value }))
+                setEditUser((u) => ({ ...u, name: e.target.value }))
               }
             />
-            <textarea
+            <input
               className="w-full border border-gray-300 rounded px-3 py-2 mb-3 focus:outline-none focus:border-[#e74c3c] bg-[#181818] text-white"
-              placeholder="Descrição"
-              value={editCategory.description}
+              placeholder="Cargo"
+              value={editUser.role}
               onChange={(e) =>
-                setEditCategory((c) => ({ ...c, description: e.target.value }))
+                setEditUser((u) => ({ ...u, role: e.target.value }))
+              }
+            />
+            <input
+              className="w-full border border-gray-300 rounded px-3 py-2 mb-3 focus:outline-none focus:border-[#e74c3c] bg-[#181818] text-white"
+              placeholder="E-mail"
+              value={editUser.email}
+              onChange={(e) =>
+                setEditUser((u) => ({ ...u, email: e.target.value }))
+              }
+            />
+            <input
+              type="password"
+              className="w-full border border-gray-300 rounded px-3 py-2 mb-3 focus:outline-none focus:border-[#e74c3c] bg-[#181818] text-white"
+              placeholder="Senha (deixe em branco para não alterar)"
+              value={editUser.password}
+              onChange={(e) =>
+                setEditUser((u) => ({ ...u, password: e.target.value }))
               }
             />
             <div className="flex flex-col sm:flex-row justify-end gap-2">
@@ -212,7 +245,7 @@ export default function Categories() {
                 Cancelar
               </button>
               <button
-                onClick={handleEditCategory}
+                onClick={handleEditUser}
                 className="px-4 py-2 rounded bg-[#e74c3c] text-white font-semibold hover:bg-red-600 w-full sm:w-auto"
               >
                 Salvar
@@ -223,19 +256,18 @@ export default function Categories() {
       )}
 
       <div className="p-2 sm:p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-        {categories.map((cat) => (
+        {users.map((user) => (
           <div
-            key={cat.id}
+            key={user.id}
             className="bg-[#232323] text-[#f5f5f5] rounded-lg shadow p-4 sm:p-5 flex flex-col gap-2"
           >
-            <h3 className="text-lg font-bold break-words">{cat.name}</h3>
-            <p className="text-sm text-gray-300 break-words">
-              {cat.description}
-            </p>
+            <h3 className="text-lg font-bold break-words">{user.name}</h3>
+            <p className="text-sm text-gray-300 break-words">{user.role}</p>
+            <p className="text-sm text-gray-400 break-words">{user.email}</p>
             <div className="flex flex-col sm:flex-row gap-2 mt-4">
               <button
                 className="px-3 py-1 rounded bg-[#e74c3c] text-white hover:bg-red-600 text-sm w-full sm:w-auto"
-                onClick={() => handleDelete(cat.id)}
+                onClick={() => handleDelete(user.id)}
               >
                 Excluir
               </button>
@@ -243,10 +275,12 @@ export default function Categories() {
                 className="px-3 py-1 rounded border border-[#e74c3c] text-[#e74c3c] hover:bg-[#e74c3c] hover:text-white text-sm w-full sm:w-auto"
                 onClick={() => {
                   setShowModalEdit(true);
-                  setEditCategory({
-                    id: cat.id,
-                    name: cat.name,
-                    description: cat.description,
+                  setEditUser({
+                    id: user.id,
+                    name: user.name,
+                    role: user.role,
+                    email: user.email,
+                    password: "",
                   });
                 }}
               >
@@ -255,9 +289,9 @@ export default function Categories() {
             </div>
           </div>
         ))}
-        {categories.length === 0 && (
+        {users.length === 0 && (
           <div className="col-span-full text-center text-gray-400 mt-10">
-            Nenhuma categoria cadastrada.
+            Nenhum editor cadastrado.
           </div>
         )}
       </div>

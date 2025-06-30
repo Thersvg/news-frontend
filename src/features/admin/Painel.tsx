@@ -1,23 +1,24 @@
 import { useState } from "react";
-import { Menu, LogOut, Newspaper, Tags, Bot } from "lucide-react";
+import { Menu, LogOut, Newspaper, Tags, Bot, User2 } from "lucide-react";
 import { useAuthStore } from "../../store/authStore";
 import { useNavigate } from "react-router";
 import IAnews from "../../components/IAnews";
 import Posts from "../../components/Posts";
 import Categories from "../../components/Categories";
+import Editores from "../../components/Editores";
 
 const menuItems = [
   { label: "NeuroIA", icon: <Bot size={20} />, key: "ia" },
   { label: "Postagens", icon: <Newspaper size={20} />, key: "posts" },
   { label: "Categorias", icon: <Tags size={20} />, key: "categories" },
-  //{ label: "Configurações", icon: <Settings size={20} />, key: "settings" },
+  { label: "Editores", icon: <User2 size={20} />, key: "editores" },
 ];
 
 const components: Record<string, JSX.Element> = {
   ia: <IAnews />,
   posts: <Posts />,
   categories: <Categories />,
-  //settings: <SettingsComponent />,
+  editores: <Editores />,
 };
 
 export default function Painel() {

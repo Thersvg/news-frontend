@@ -30,8 +30,14 @@ export default function IAnews() {
   const [summary, setSummary] = useState("");
 
   async function loadData() {
-    const Datacategories = await CategoriesAPI.GetAll();
-    setCategories(Datacategories);
+    try {
+      const Datacategories = await CategoriesAPI.GetAll();
+      setCategories(Datacategories);
+    } catch {
+      toast.error(
+        "Não foi possível carregar as informações. Tente novamente mais tarde."
+      );
+    }
   }
 
   async function uploadImage(file: File) {
@@ -52,12 +58,16 @@ export default function IAnews() {
   //obs: melhorar editor de texto
 
   async function CreatePost() {
+    let pathImage = "";
+
     if (!title) {
       toast.warn("Por favor, insira o título da notícia antes de continuar.");
       return;
     }
     if (!summary) {
-      toast.warn("Por favor, insira um resumo para a notícia antes de continuar.");
+      toast.warn(
+        "Por favor, insira um resumo para a notícia antes de continuar."
+      );
       return;
     }
     if (!image) {
@@ -75,7 +85,14 @@ export default function IAnews() {
       return;
     }
 
-    const pathImage = await uploadImage(image);
+    try {
+      pathImage = await uploadImage(image);
+    } catch {
+      toast.error(
+        "Erro ao fazer upload da imagem. Por favor, tente novamente."
+      );
+      return;
+    }
 
     const DataNotice = {
       title: title,
@@ -90,7 +107,9 @@ export default function IAnews() {
       toast.success("Notícia criada com sucesso!");
       clearInputs();
     } catch {
-      toast.error("Ocorreu um erro ao criar a notícia. Tente novamente.");
+      toast.error(
+        "Não foi possível criar a notícia. Por favor, tente novamente mais tarde."
+      );
     }
   }
 
@@ -183,22 +202,34 @@ export default function IAnews() {
         {step === "edit" && (
           <div
             className="bg-white rounded-xl shadow-lg p-4 sm:p-6 w-full h-full max-w-6xl mx-auto flex flex-col gap-6 overflow-auto"
-            style={{ minHeight: "70vh", maxHeight: "90vh" }}
+            style={{ minHeight: "90vh", maxHeight: "90vh" }}
           >
             {/* Mobile: stack, Desktop: row */}
             <div className="flex flex-col lg:flex-row gap-6 h-full">
               {/* Left: Image + Editor */}
               <div className="flex-1 flex flex-col gap-4 min-w-0 h-full">
-                
                 {/* Editor */}
                 <div className="flex-1 flex flex-col min-h-0">
                   <label className="flex items-center gap-2 mb-2 text-[#18181b] font-medium">
                     <FileText size={18} /> Conteúdo da notícia
                   </label>
-                  <div className="flex-1 min-h-[200px] max-h-full overflow-auto">
+                  <div
+                    className="flex-1 min-h-[200px] max-h-full overflow-auto rounded border border-gray-200"
+                    style={{
+                      wordBreak: "break-word",
+                      overflowWrap: "break-word",
+                      maxWidth: "100%",
+                    }}
+                  >
                     <TiptapEditor
                       content={editorContent}
                       onChange={setEditorContent}
+                      editorProps={{
+                        attributes: {
+                          style:
+                            "word-break: break-word; overflow-wrap: break-word; max-width: 100%;",
+                        },
+                      }}
                     />
                   </div>
                 </div>
@@ -213,21 +244,28 @@ export default function IAnews() {
                       placeholder="Envie um novo prompt..."
                       value={chatPrompt}
                       onChange={(e) => setChatPrompt(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && chatPrompt.trim()) {
+                          handleChatPrompt();
+                        }
+                      }}
+                      maxLength={300}
                     />
                     <button
                       className="bg-[#e63946] text-white rounded-lg p-2 hover:bg-[#d62839] transition"
                       onClick={handleChatPrompt}
                       disabled={!chatPrompt.trim()}
+                      type="button"
                     >
                       <Send size={18} />
                     </button>
                   </div>
-                </div>                
+                </div>
               </div>
 
               {/* Right: Chat + Options */}
               <div className="w-full lg:w-80 flex flex-col gap-4 flex-shrink-0 h-full">
-                {/* Título da notícia */}               
+                {/* Título da notícia */}
                 <div>
                   <label className="flex items-center gap-2 mb-2 text-[#18181b] font-medium">
                     <FileText size={18} /> Título da notícia
@@ -237,6 +275,7 @@ export default function IAnews() {
                     placeholder="Digite o título da notícia..."
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
+                    maxLength={120}
                   />
                 </div>
                 {/* Resumo da notícia */}
@@ -250,6 +289,7 @@ export default function IAnews() {
                     placeholder="Digite um resumo breve da notícia..."
                     value={summary}
                     onChange={(e) => setSummary(e.target.value)}
+                    maxLength={300}
                   />
                 </div>
                 {/* Image input */}
@@ -265,11 +305,11 @@ export default function IAnews() {
                     onChange={handleImageChange}
                   />
                   {image && (
-                    <span className="ml-2 text-xs text-[#e63946]">
+                    <span className="ml-2 text-xs text-[#e63946] truncate max-w-[120px]">
                       {image.name}
                     </span>
                   )}
-                </label>                
+                </label>
                 {/* Categoria única */}
                 <div>
                   <label className="flex items-center gap-2 mb-2 text-[#18181b] font-medium">
@@ -326,6 +366,7 @@ export default function IAnews() {
                 <button
                   className="mt-4 flex items-center gap-2 bg-[#e63946] text-white px-6 py-2 rounded-lg font-semibold transition hover:bg-[#d62839] hover:shadow-lg hover:scale-105 active:scale-100 cursor-pointer"
                   onClick={() => CreatePost()}
+                  type="button"
                 >
                   <Save size={18} />{" "}
                   {status === "published" ? "Postar" : "Salvar"}

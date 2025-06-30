@@ -47,7 +47,13 @@ export default function Posts() {
     let pathImage = objectpost.image;
 
     if (image) {
-      pathImage = await uploadImage(image);
+      try {
+        pathImage = await uploadImage(image);        
+      } catch {
+        toast.error("Erro ao fazer upload da imagem. Por favor, tente novamente.");
+        return;
+      }
+
     }
 
     const DataNotice = {
@@ -99,10 +105,16 @@ export default function Posts() {
   }
 
   async function loadData() {
-    const allPosts = await PostAPI.getAllByUser();
-    getPosts(allPosts);
-    const Datacategories = await CategoriesAPI.GetAll();
-    setCategories(Datacategories);
+    try {
+      const allPosts = await PostAPI.getAllByUser();
+      getPosts(allPosts);
+      const Datacategories = await CategoriesAPI.GetAll();
+      setCategories(Datacategories);
+    } catch {
+      toast.error(
+        "Não foi possível carregar as informações. Tente novamente mais tarde."
+      );
+    }
   }
 
   useEffect(() => {
@@ -258,12 +270,15 @@ export default function Posts() {
                   <label className="flex items-center gap-2 mb-2 text-[#18181b] font-medium">
                     <FileText size={18} /> Conteúdo da notícia
                   </label>
-                    <div className="flex-1 min-h-[200px] max-h-full overflow-auto bg-white rounded-lg border border-gray-200" style={{ color: "#18181b" }}>
-                     <TiptapEditor
+                  <div
+                    className="flex-1 min-h-[200px] max-h-full overflow-auto bg-white rounded-lg border border-gray-200"
+                    style={{ color: "#18181b" }}
+                  >
+                    <TiptapEditor
                       content={editorContent}
                       onChange={setEditorContent}
-                    /> 
-                    </div>
+                    />
+                  </div>
                 </div>
               </div>
 
