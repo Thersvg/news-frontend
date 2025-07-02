@@ -184,7 +184,7 @@ export default function Posts() {
                   title="Visualizar"
                   onClick={() =>
                     window.open(
-                      `${window.location.origin}/${post.slug}`,
+                      `${window.location.origin}/${post.category.slug}/${post.slug}`,
                       "_blank"
                     )
                   }
@@ -218,7 +218,7 @@ export default function Posts() {
                   className="p-2 rounded hover:bg-[#333] transition"
                   title="Compartilhar"
                   onClick={() => {
-                    const shareUrl = `${window.location.origin}/${post.slug}`;
+                    const shareUrl = `${window.location.origin}/${post.category.slug}/${post.slug}`;
                     if (navigator.share) {
                       navigator
                         .share({

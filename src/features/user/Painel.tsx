@@ -48,9 +48,13 @@ export default function Painel() {
         >
           {/* Avatar e nome */}
           <div className="flex flex-col items-center gap-2 px-7 py-8 border-b border-[#232425]">
-            <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center text-[#181a1b] text-2xl font-bold shadow-lg">
-              {/* Avatar fictício */}
-              <span>N</span>
+            <div className="w-14 h-14 rounded-full flex items-center justify-center text-[#181a1b] text-2xl font-bold shadow-lg">
+                {/* Avatar fictício */}
+                <img
+                src="/src/assets/LOGO NEURONA.png"
+                alt="Avatar"
+                className="w-14 h-14 rounded-full object-cover"
+                />
             </div>
             <span className="text-lg font-semibold text-white tracking-tight">
               Neurona
