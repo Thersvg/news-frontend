@@ -60,4 +60,19 @@ export const PostAPI = {
     }
     return response.json();
   },
+
+  getAll: async (page: number = 1, limit: number = 10) => {
+    const params = new URLSearchParams({ page: String(page), limit: String(limit) });
+    const response = await fetch(`http://localhost:3000/post?${params.toString()}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${tokenAcess}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Erro ao buscar todos os posts");
+    }
+    return response.json();
+  }
 };
